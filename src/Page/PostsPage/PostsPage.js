@@ -45,6 +45,22 @@ const PostsPage = () => {
             console.log("clear");
         }
     }, [token])
+
+    useEffect(() => {
+        let name = document.getElementsByClassName("title__col");
+        name = [...name];
+
+        let pattern = new RegExp(`${search}`, "gi")
+        
+        if (!Boolean(search)) {
+            pattern = null;
+        }
+
+        name.forEach(paragraph => {
+            paragraph.innerHTML = paragraph.textContent.replace(pattern, (match) => `<mark>${match}</mark>`)
+        });
+    }, [search])
+
     if (isError) {
         return (
             <div>
@@ -99,6 +115,9 @@ const PostsPage = () => {
         if (sort === SORT.DESC) setSort(SORT.NONE);
     }
 
+    
+
+
     const handleSearch = (event) => {
         setSearch(event.target.value)
     }
@@ -123,7 +142,7 @@ const PostsPage = () => {
                         return (
                             <tr key={item.id}>
                                 <td>{item.id}</td>
-                                <td>{item.title}</td>
+                                <td className="title__col">{item.title}</td>
                                 <td>
                                     <div className="d-flex gap-3">
                                         <Link to={"/post/" + item.id} className="btn btn-primary">

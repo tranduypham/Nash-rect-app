@@ -1,19 +1,29 @@
-:root{
+:root {
     --black: #000;
 }
-html{
+
+html {
     font-size: 20px;
 }
+
 nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    font-size: 20px;
-    padding: 20px 0;
-    display: flex;
+    list-style : none;
+    display    : flex;
+    gap        : 20px;
+    font-size  : 20px;
+    padding    : 20px 0;
+    display    : flex;
     align-items: center;
 }
-nav ul a{
+
+nav ul a {
     text-decoration: none;
-    color: var(--black);
+    color          : var(--black);
+}
+
+.mark,
+mark {
+    padding         : 0 !important;
+    background-color: rgb(255, 222, 145) !important;
+    font-weight: bold;
 }
