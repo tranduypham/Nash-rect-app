@@ -46,20 +46,21 @@ const PostsPage = () => {
         }
     }, [token])
 
-    useEffect(() => {
-        let name = document.getElementsByClassName("title__col");
-        name = [...name];
-
-        let pattern = new RegExp(`${search}`, "gi")
-        
-        if (!Boolean(search)) {
+    const hightlightText = (paragraph, textNeedHighlight) => {
+        // Must have () bracket, or else hightlight text won't not be include in spilt text. global, ignor case
+        let pattern = new RegExp(`(${textNeedHighlight})`, "gi")
+        if (!Boolean(textNeedHighlight)) {
             pattern = null;
         }
-
-        name.forEach(paragraph => {
-            paragraph.innerHTML = paragraph.textContent.replace(pattern, (match) => `<mark>${match}</mark>`)
-        });
-    }, [search])
+        const parts = paragraph.split(pattern);
+        return parts.map(part =>
+            (
+                part.toLowerCase() === textNeedHighlight.toLowerCase() ?
+                    <mark>{textNeedHighlight}</mark> :
+                    part
+            )
+        );
+    }
 
     if (isError) {
         return (
@@ -115,7 +116,7 @@ const PostsPage = () => {
         if (sort === SORT.DESC) setSort(SORT.NONE);
     }
 
-    
+
 
 
     const handleSearch = (event) => {
@@ -142,7 +143,7 @@ const PostsPage = () => {
                         return (
                             <tr key={item.id}>
                                 <td>{item.id}</td>
-                                <td className="title__col">{item.title}</td>
+                                <td className="title__col">{hightlightText(item.title, search)}</td>
                                 <td>
                                     <div className="d-flex gap-3">
                                         <Link to={"/post/" + item.id} className="btn btn-primary">
