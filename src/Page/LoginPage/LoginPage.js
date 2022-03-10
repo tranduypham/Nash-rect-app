@@ -85,7 +85,7 @@ const LoginPage = ({ message }) => {
     return (
         <Container className="p-0">
             <Row>
-                <Col md={5}>
+                <Col md={7}>
                     {Boolean(message) && <Alert variant="danger">{message}</Alert>}
                     <form onSubmit={formik.handleSubmit}>
                         <div className="form-group mb-3">
