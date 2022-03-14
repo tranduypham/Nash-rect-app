@@ -1,32 +1,38 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../../App";
 import LoginPage from "../LoginPage/LoginPage";
 
 const ProfilePage = () => {
-    const token = localStorage.getItem("Authorization");
+    // const [token] = localStorage.getItem("Authorization");
+    const [token, setToken] = useContext(Context);
     const userId = localStorage.getItem("UserId");
     const [isLoading, setLoading] = useState(true);
     const [isError, setError] = useState(false);
     const [profile, setProfile] = useState({});
+
+    const fetchData = ({header = {}}) => {
+        axios({
+            method: "GET",
+            url: `https://60dff0ba6b689e001788c858.mockapi.io/users/${userId}`,
+            headers: header
+        })
+            .then((res) => {
+                setProfile(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(true);
+            })
+    }
     useEffect(() => {
         if (Boolean(userId)) {
             let header = {};
             if(Boolean(token)){
                 header.Authorization = token;
             }
-            axios({
-                method: "GET",
-                url: `https://60dff0ba6b689e001788c858.mockapi.io/users/${userId}`,
-                headers: header
-            })
-                .then((res) => {
-                    setProfile(res.data);
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    setError(true);
-                })
+            fetchData(header);
         }
 
         return () => {
